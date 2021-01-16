@@ -1,0 +1,27 @@
+﻿@page "/View/"
+@namespace QuickWeb.Web
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>_Page</title>
+    <base href="~/" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+    <app>
+        <component type="typeof(Pager)" render-mode="ServerPrerendered" />
+    </app>
+
+    <script src="~/intertop.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="~/js/less.min.js" type="text/javascript" asp-append-version="true"></script>
+</body>
+</html>

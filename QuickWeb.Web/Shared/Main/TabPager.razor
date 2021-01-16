@@ -1,0 +1,68 @@
+﻿<div class="tabpager">
+    <div class="tabheader" oncontextmenu="return false;">
+        <div class="line"></div>
+        <ul>
+            @foreach (var item in _tabs)
+            {
+                <li class="@(item.Checked?"checked":"")" @onclick="@((e)=> {checkedTab(e, item); })" @oncontextmenu="@((e)=> { checkedTab(e, item);contextmenu(e); })">@item.Tab</li>
+            }
+        </ul>
+    </div>
+    <div class="tabbody">
+        @foreach (var item in _tabs)
+        {
+            <iframe class="@(item.Checked?"checked":"")" src="@item.Url"></iframe>
+        }
+    </div>
+</div>
+
+@if (showScript)
+{
+    <Script top="top" left="left" closethis="closethis" closeall="closeall" closerests="closerests"></Script>
+}
+
+@code {
+
+    [Parameter]
+    public List<HeadTab> _tabs { get; set; }
+
+    [Parameter]
+    public bool showScript { get; set; }
+
+    double top = 0;
+    double left = 0;
+
+    void contextmenu(MouseEventArgs e)
+    {
+        if (e.Button == 2)
+        {
+            showScript = true;
+            top = e.ClientY;
+            left = e.ClientX;
+        }
+    }
+
+    void checkedTab(MouseEventArgs e, HeadTab tab)
+    {
+        _tabs.ForEach(x => x.Checked = false);
+        if (_tabs.Contains(tab))
+            tab.Checked = true;
+    }
+
+    void closethis()
+    {
+        _tabs.Remove(_tabs.FirstOrDefault(x => x.Tab != "首页" && x.Checked == true));
+        _tabs[0].Checked = true;
+    }
+
+    void closeall()
+    {
+        _tabs.RemoveAll(x => x.Tab != "首页");
+        _tabs[0].Checked = true;
+    }
+
+    void closerests()
+    {
+        _tabs.RemoveAll(x => x.Tab != "首页" && x.Checked == false);
+    }
+}

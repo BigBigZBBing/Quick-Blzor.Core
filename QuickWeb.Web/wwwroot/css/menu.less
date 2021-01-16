@@ -1,0 +1,70 @@
+﻿.menu {
+    font-size: 26px;
+    font-family: "黑体";
+    font-weight: bold;
+    color: white;
+    list-style-type: none;
+    line-height: 150%;
+    text-align: center;
+    margin-right: 5px;
+    background-image: linear-gradient(to bottom right,#4a46fb, #e483f6);
+    box-shadow: 5px -3px 10px -4px #e483f6;
+    overflow-y: auto;
+    z-index: 0;
+
+    & li {
+        height: auto;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    & li div {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 0 0 5px 1px white;
+
+        &:hover {
+            background: radial-gradient(120px 8px at 50% 80%, white, transparent);
+        }
+    }
+
+    & li ul li {
+        font-size: 20px;
+        font-family: "黑体";
+        color: white;
+        list-style-type: none;
+        line-height: 200%;
+        cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: menushow 1s;
+
+        & a {
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: white;
+            box-shadow: 0 0 5px 2px white inset;
+            border-radius: 15px;
+
+            &:hover {
+                color: #4a46fb;
+                background: radial-gradient(80px 15px at 50% 50%, white, transparent);
+            }
+        }
+    }
+}
+
+@keyframes menushow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

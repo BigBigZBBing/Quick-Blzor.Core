@@ -1,0 +1,41 @@
+﻿@page "/"
+@inject HttpClient http
+@inject NavigationManager Nav
+@inject IJSRuntime JSRuntime
+
+<div class="login">
+    <div class="form">
+        <EditForm Model="loginViewModel" OnValidSubmit="HandleValidSubmit">
+            <img class="logo" src="/image/logo.jpg" />
+            <label class="form-input">
+                <span>用户名</span>
+                <InputText @bind-Value="loginViewModel.UserName" />
+            </label>
+            <label class="form-input">
+                <span>密码</span>
+                <InputText @bind-Value="loginViewModel.Password" />
+            </label>
+
+            <button class="form-btn" type="submit">登录</button>
+            <button class="form-btn" type="reset">重置</button>
+
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </EditForm>
+    </div>
+    <div class="signature">
+    </div>
+</div>
+
+@code {
+
+    LoginViewModel loginViewModel = new LoginViewModel();
+
+    void HandleValidSubmit(EditContext e)
+    {
+        //请在这里加密用户名密码
+        String User = DESHelper.Encrypt(loginViewModel.UserName);
+        String Pwd = DESHelper.Encrypt(loginViewModel.Password);
+        Nav.NavigateTo($"LogIn?UserName={User}&Password={Pwd}", true);
+    }
+}

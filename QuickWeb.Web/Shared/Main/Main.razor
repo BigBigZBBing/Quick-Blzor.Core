@@ -1,0 +1,108 @@
+﻿@page "/Main"
+@inject NavigationManager Nav
+
+<AuthorizeView>
+    <Authorized>
+        <div @onclick="noshowtab">
+            <div class="pg-header">
+                <div class="logo">
+                    LOGO
+                </div>
+                <div class="usershow">
+                    BigBing Zhang
+                </div>
+                <div class="message">
+                    <div class="tab" @onclick="@((e)=> { showMessage = !showMessage; })">
+                        信息
+                    </div>
+                    @if (showMessage)
+                    {
+                        <div class="chlid">
+                            @foreach (var item in message)
+                            {
+                                <div @onclick="@(()=> { headTab(item.Title,item.Url);showMessage = !showMessage; })">
+                                    @item.Title
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="userinfo">
+                    <div class="tab" @onclick="@((e)=> { showUserinfo = !showUserinfo; })">
+                        信息
+                    </div>
+                    @if (showUserinfo)
+                    {
+                        <div class="chlid">
+                            @foreach (var item in userinfo)
+                            {
+                                <div @onclick="@(()=> { headTab(item.Title,item.Url); showUserinfo = !showUserinfo; })">
+                                    @item.Title
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="pg-content">
+                <div class="menu fl">
+                    <Menu _menu="_menu" oncallback="oncallback" />
+                </div>
+                <div class="content fr">
+                    <TabPager _tabs="tabs" showScript="showScript" />
+                </div>
+            </div>
+            <div class="pg-footer">
+                <span class="developer">Develoment To BigBing Zhang</span>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        @{ Nav.NavigateTo("/"); }
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    /// <summary>
+    /// 右键菜单
+    /// </summary>
+    bool showScript = false;
+
+    /// <summary>
+    /// 消息栏
+    /// </summary>
+    bool showMessage = false;
+
+    /// <summary>
+    /// 信息栏
+    /// </summary>
+    bool showUserinfo = false;
+
+    void oncallback(HeadTab pager)
+    {
+        tabs.ForEach(x => x.Checked = false);
+        var cur = tabs.FirstOrDefault(x => x.Tab == pager.Tab);
+        if (cur == null)
+        {
+            tabs.Add(pager);
+        }
+        else
+        {
+            cur.Checked = true;
+        }
+    }
+
+    void noshowtab() => showScript = false;
+
+    public void headTab(string tab, string url)
+    {
+        tabs.ForEach(x => x.Checked = false);
+        tabs.Add(new HeadTab()
+        {
+            Tab = tab,
+            Url = url,
+            Checked = true
+        });
+    }
+}

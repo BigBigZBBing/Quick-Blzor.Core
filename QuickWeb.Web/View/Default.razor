@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Nav
+
+<div layer-1>
+    <AuthorizeView>
+        <Authorized>
+            @Body
+        </Authorized>
+        <NotAuthorized>
+            <font size="26px" color="red">权限已失效~ 正在跳转……</font>
+            @{
+                JSRuntime.InvokeVoidAsync("blazor.UrlRedirect", "/");
+            }
+        </NotAuthorized>
+    </AuthorizeView>
+</div>

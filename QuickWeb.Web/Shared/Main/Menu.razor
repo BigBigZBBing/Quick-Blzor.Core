@@ -1,0 +1,49 @@
+﻿@inject NavigationManager Nav
+
+<ul class="menu">
+    @foreach (var item in _menu)
+    {
+        <li>
+            <div @onclick="((e)=> { MenuOpen(e,item); })">@item.Title</div>
+            @if (item.Show)
+            {
+                <ul>
+                    @foreach (var item1 in item.Tab)
+                    {
+                        <li href="@item1.Value" @onclick="@(()=>{ AddTab(item1); })">
+                            <NavLink href="#" onclick="return false;" Match="NavLinkMatch.All">
+                                <span>@item1.Key</span>
+                            </NavLink>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public List<MenuObject> _menu { get; set; }
+
+    [Parameter]
+    public EventCallback<HeadTab> oncallback { get; set; }
+
+    void MenuOpen(MouseEventArgs e, MenuObject menu)
+    {
+        _menu.ForEach(x => x.Show = x.Title == menu.Title ? menu.Show : false);
+        if (_menu.Contains(menu))
+            menu.Show = !menu.Show;
+    }
+
+    void AddTab(KeyValuePair<string, string> pair)
+    {
+        oncallback.InvokeAsync(new HeadTab()
+        {
+            Tab = pair.Key,
+            Url = pair.Value,
+            Checked = true
+        });
+    }
+}
